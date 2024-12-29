@@ -1,14 +1,18 @@
 package com.quaxt;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Mcc {
 
     enum Mode {LEX, PARSE, CODEGEN, CODE_EMIT}
 
-    public static void main(String[] args0) {
+    public static void main(String[] args0) throws IOException {
         ArrayList<String> args = Arrays.stream(args0)
                 .collect(Collectors.toCollection(ArrayList::new));
         Mode mode = Mode.CODE_EMIT;
@@ -32,5 +36,6 @@ public class Mcc {
         }
         String srcFile = args.getFirst();
         System.out.println("mode=" + mode + "\nemitAssembly=" + emitAssembly + "\nsrcFile=" + srcFile);
+        List<Token> l = new Lexer().lex(Files.readString(Path.of(srcFile)));
     }
 }

@@ -51,9 +51,8 @@ public class Lexer {
 
     public static void main(String[] args) throws IOException {
         Lexer lexer = new Lexer();
-        List<Token> l = lexer.lex(Files.readString(Path.of("return_2.c")));
+        List<Token> l = lexer.lex(Files.readString(Path.of("/home/mreilly/wa/writing-a-c-compiler-tests/tests/chapter_1/invalid_lex/invalid_identifier.c")));
         System.out.println(l);
     }
 
 }
-
