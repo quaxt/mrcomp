@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp /home/mreilly/wa/mrcomp/target/mrcompiler-1.0-SNAPSHOT.jar com.quaxt.Mcc "$@"
