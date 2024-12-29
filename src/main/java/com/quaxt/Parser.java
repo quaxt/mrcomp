@@ -1,5 +1,8 @@
 package com.quaxt;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Parser {
@@ -12,12 +15,44 @@ public class Parser {
         return tokens;
     }
 
-    static Expr parseStatement(List<Token> tokens) {
+    static Node parseStatement(List<Token> tokens) {
         expect(Token.RETURN, tokens);
-        Expr statement = parseExpr(tokens);
+        Expr expr = parseExpr(tokens);
         expect(Token.SEMICOLON, tokens);
-        return statement;
+        return new Return(expr);
     }
+
+    private static Program parseProgram(List<Token> tokens) {
+        Function function = parseFunction(tokens);
+        return new Program(function);
+    }
+
+    private static Token parseType(List<Token> tokens) {
+        Token type = tokens.removeFirst();
+        if (!type.isType()){
+            throw new IllegalArgumentException("Expected type, got " + type);
+        }
+        return type;
+    }
+
+    private static String parseIdentifier(List<Token> tokens) {
+        Token identifier = tokens.removeFirst();
+        if (identifier.type()!=TokenType.IDENTIFIER){
+            throw new IllegalArgumentException("Expected identifier, got " + identifier);
+        }
+        return identifier.value();
+    }
+    private static Function parseFunction(List<Token> tokens) {
+        Token returnType = parseType(tokens);
+        String name = parseIdentifier(tokens);
+        expect(Token.OPEN_PAREN, tokens);
+        expect(Token.VOID, tokens);
+        expect(Token.CLOSE_PAREN, tokens);
+        expect(Token.OPEN_BRACE, tokens);
+        Node statement = parseStatement(tokens);
+        return new Function(name, returnType, statement);
+    }
+
 
     private static Expr parseExpr(List<Token> tokens) {
         Token token = tokens.removeFirst();
@@ -32,7 +67,8 @@ public class Parser {
         return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(parseStatement(Lexer.lex("return 42;")));
+    public static void main(String[] args) throws IOException {
+        System.out.println(parseProgram(Lexer.lex(Files.readString(Paths.get("return_2.c")))));
     }
+
 }

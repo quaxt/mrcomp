@@ -1,5 +1,5 @@
 package com.quaxt;
 
-sealed interface Node permits Expr {
+sealed interface Node permits Expr, Return {
 }
 
