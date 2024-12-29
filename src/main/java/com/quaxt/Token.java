@@ -13,7 +13,10 @@ public record Token(TokenType type, String value) {
         }
 
     }
-
+    static final Token RETURN = fixed.get(TokenType.RETURN);
+    static final Token INT = fixed.get(TokenType.INT);
+    static final Token VOID =  fixed.get(TokenType.VOID);
+    public static final Token SEMICOLON = fixed.get(TokenType.SEMICOLON);
     public static Token of(TokenType tokenType) {
         if (tokenType == null) throw new IllegalArgumentException("TokenType must not be null");
         Token t = fixed.get(tokenType);
@@ -26,9 +29,9 @@ public record Token(TokenType type, String value) {
     public static Token of(TokenType tokenType, String value) {
         if (tokenType == TokenType.IDENTIFIER) {
             switch (value) {
-                case "return": return fixed.get(TokenType.RETURN);
-                case "int": return fixed.get(TokenType.INT);
-                case "void": return fixed.get(TokenType.VOID);
+                case "return": return RETURN;
+                case "int": return INT;
+                case "void": return VOID;
             }
         }
         return new Token(tokenType, value);

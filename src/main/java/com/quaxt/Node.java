@@ -1,4 +1,5 @@
 package com.quaxt;
 
-public class Node {
+sealed interface Node permits Expr {
 }
+
