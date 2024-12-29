@@ -37,5 +37,15 @@ public class Mcc {
         String srcFile = args.getFirst();
         System.out.println("mode=" + mode + "\nemitAssembly=" + emitAssembly + "\nsrcFile=" + srcFile);
         List<Token> l = Lexer.lex(Files.readString(Path.of(srcFile)));
+        if (mode == Mode.LEX) {
+            return;
+        }
+        Parser.parseProgram(l);
+        if (!l.isEmpty()) {
+            throw new IllegalArgumentException("Unexpected token " + l.getFirst());
+        }
+        if (mode == Mode.PARSE) {
+            return;
+        }
     }
 }

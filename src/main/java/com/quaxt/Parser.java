@@ -22,7 +22,7 @@ public class Parser {
         return new Return(expr);
     }
 
-    private static Program parseProgram(List<Token> tokens) {
+    public static Program parseProgram(List<Token> tokens) {
         Function function = parseFunction(tokens);
         return new Program(function);
     }
@@ -50,6 +50,8 @@ public class Parser {
         expect(Token.CLOSE_PAREN, tokens);
         expect(Token.OPEN_BRACE, tokens);
         Node statement = parseStatement(tokens);
+        expect(Token.CLOSE_BRACE, tokens);
+
         return new Function(name, returnType, statement);
     }
 
@@ -68,7 +70,7 @@ public class Parser {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(parseProgram(Lexer.lex(Files.readString(Paths.get("return_2.c")))));
+        System.out.println(parseProgram(Lexer.lex(Files.readString(Paths.get("/home/mreilly/wa/writing-a-c-compiler-tests/tests/chapter_1/invalid_parse/end_before_expr.c")))));
     }
 
 }
