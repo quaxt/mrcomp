@@ -3,6 +3,7 @@ package com.quaxt.mcc.parser;
 
 import com.quaxt.mcc.Token;
 import com.quaxt.mcc.TokenType;
+
 import java.util.List;
 
 public class Parser {
@@ -28,7 +29,7 @@ public class Parser {
 
     private static Token parseType(List<Token> tokens) {
         Token type = tokens.removeFirst();
-        if (!type.isType()){
+        if (!type.isType()) {
             throw new IllegalArgumentException("Expected type, got " + type);
         }
         return type;
@@ -36,11 +37,12 @@ public class Parser {
 
     private static String parseIdentifier(List<Token> tokens) {
         Token identifier = tokens.removeFirst();
-        if (identifier.type()!=TokenType.IDENTIFIER){
+        if (identifier.type() != TokenType.IDENTIFIER) {
             throw new IllegalArgumentException("Expected identifier, got " + identifier);
         }
         return identifier.value();
     }
+
     private static Function parseFunction(List<Token> tokens) {
         Token returnType = parseType(tokens);
         String name = parseIdentifier(tokens);
@@ -57,10 +59,19 @@ public class Parser {
 
     private static Exp parseExpr(List<Token> tokens) {
         Token token = tokens.removeFirst();
-        if (TokenType.NUMERIC != token.type()){
-            throw new IllegalArgumentException("Expected int, got " + token);
+        if (TokenType.NUMERIC == token.type()) {
+            return new Int(Integer.parseInt(token.value()));
+        } else if (TokenType.NEGATE == token.type()) {
+            return new Negate(parseExpr(tokens));
+        } else if (TokenType.COMPLIMENT == token.type()) {
+            return new Complement(parseExpr(tokens));
+        } else if (TokenType.OPEN_PAREN == token.type()) {
+            Exp r = parseExpr(tokens);
+            expect(Token.CLOSE_PAREN, tokens);
+            return r;
         }
-        return new Int(Integer.parseInt(token.value()));
+        throw new IllegalArgumentException("Expected exp, got " + token);
+
     }
 
 }
