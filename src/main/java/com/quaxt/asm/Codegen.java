@@ -21,16 +21,16 @@ public class Codegen {
     }
 
     private static List<Instruction> codeGenInstructions(Node statement) {
-        if (statement instanceof Return(Expr expr)) {
-            List<Instruction> instructions = new ArrayList<>(codeGenExpr(expr));
+        if (statement instanceof Return(Exp exp)) {
+            List<Instruction> instructions = new ArrayList<>(codeGenExpr(exp));
             instructions.add(new ReturnAsm());
             return instructions;
         } else throw new IllegalArgumentException("not done: Expr");
 
     }
 
-    private static List<Instruction> codeGenExpr(Expr expr) {
-        if (expr instanceof Int(int i)) {
+    private static List<Instruction> codeGenExpr(Exp exp) {
+        if (exp instanceof Int(int i)) {
             List<Instruction> instructions = new ArrayList<>();
             instructions.add(new Mov(i));
             return instructions;

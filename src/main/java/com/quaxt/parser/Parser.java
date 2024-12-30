@@ -16,9 +16,9 @@ public class Parser {
 
     static Node parseStatement(List<Token> tokens) {
         expect(Token.RETURN, tokens);
-        Expr expr = parseExpr(tokens);
+        Exp exp = parseExpr(tokens);
         expect(Token.SEMICOLON, tokens);
-        return new Return(expr);
+        return new Return(exp);
     }
 
     public static Program parseProgram(List<Token> tokens) {
@@ -55,7 +55,7 @@ public class Parser {
     }
 
 
-    private static Expr parseExpr(List<Token> tokens) {
+    private static Exp parseExpr(List<Token> tokens) {
         Token token = tokens.removeFirst();
         if (TokenType.NUMERIC != token.type()){
             throw new IllegalArgumentException("Expected int, got " + token);

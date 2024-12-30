@@ -1,4 +1,4 @@
 package com.quaxt.parser;
 
-public record Int(int i) implements Expr {
+public record Int(int i) implements Exp {
 }

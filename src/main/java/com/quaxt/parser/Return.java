@@ -1,5 +1,5 @@
 package com.quaxt.parser;
 
-public record Return (Expr expr) implements Node {
+public record Return (Exp exp) implements Node {
 
 }
