@@ -3,7 +3,7 @@ package com.quaxt;
 import com.quaxt.asm.Codegen;
 import com.quaxt.asm.ProgramAsm;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -13,18 +13,32 @@ import java.util.stream.Collectors;
 
 public class Mcc {
 
-    enum Mode {LEX, PARSE, CODEGEN, CODE_EMIT}
+    enum Mode {LEX, PARSE, CODEGEN, COMPILE, ASSEMBLE}
 
-    public static void main(String[] args0) throws IOException {
+    public static int preprocess(Path cFile, Path iFile) throws IOException, InterruptedException {
+        ProcessBuilder pb =
+                new ProcessBuilder("gcc", "-E", "-P", cFile.toString(), "-o", iFile.toString()).inheritIO();
+        return pb.start().waitFor();
+    }
+
+
+    public static int assemble(Path asmFile, Path outputFile) throws IOException, InterruptedException {
+        ProcessBuilder pb =
+                new ProcessBuilder("gcc", asmFile.toString(), "-o", outputFile.toString()).inheritIO();
+        return pb.start().waitFor();
+    }
+
+    public static void main(String[] args0) throws Exception {
         ArrayList<String> args = Arrays.stream(args0)
                 .collect(Collectors.toCollection(ArrayList::new));
-        Mode mode = Mode.CODE_EMIT;
+        Mode mode = Mode.ASSEMBLE;
         boolean emitAssembly = false;
         for (int i = args.size() - 1; i >= 0; i--) {
             Mode newMode = switch (args.get(i)) {
                 case "--lex" -> Mode.LEX;
                 case "--parse" -> Mode.PARSE;
                 case "--codegen" -> Mode.CODEGEN;
+                case "-S" -> Mode.COMPILE;
                 default -> null;
             };
             if (newMode == null) {
@@ -37,9 +51,16 @@ public class Mcc {
                 args.remove(i);
             }
         }
-        String srcFile = args.getFirst();
-        System.out.println("mode=" + mode + "\nemitAssembly=" + emitAssembly + "\nsrcFile=" + srcFile);
-        List<Token> l = Lexer.lex(Files.readString(Path.of(srcFile)));
+        Path srcFile = Path.of(args.getFirst());
+        String bareFileName = removeEnding(srcFile.getFileName().toString(), ".c");
+        Path intermediateFile = srcFile.resolveSibling(bareFileName+".i");
+
+        int preprocessExitCode = preprocess(srcFile, intermediateFile);
+        if (preprocessExitCode != 0) {
+            System.exit(preprocessExitCode);
+        }
+        List<Token> l = Lexer.lex(Files.readString(intermediateFile));
+        Files.delete(intermediateFile);
         if (mode == Mode.LEX) {
             return;
         }
@@ -52,5 +73,27 @@ public class Mcc {
         }
 
         ProgramAsm programAsm = Codegen.codeGenProgram(program);
+        if (mode == Mode.CODEGEN) {
+            return;
+        }
+        Path asmFile = srcFile.resolveSibling(bareFileName + ".s");
+        try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(asmFile))) {
+            programAsm.emitAsm(pw);
+            pw.flush();
+        }
+
+        if (mode == Mode.COMPILE){
+            return;
+        }
+        int exitCode = assemble(asmFile, intermediateFile.resolveSibling(bareFileName));
+        Files.delete(asmFile);
+        System.exit(exitCode);
+    }
+
+    private static String removeEnding(String fileName, String ending) {
+        if (fileName.endsWith(ending)) {
+            return fileName.substring(0, fileName.length() - ending.length());
+        }
+        throw new IllegalArgumentException(fileName + " does not have ending " + ending);
     }
 }

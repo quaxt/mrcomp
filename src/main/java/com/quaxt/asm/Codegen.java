@@ -20,9 +20,8 @@ public class Codegen {
     }
 
     private static List<Instruction> codeGenInstructions(Node statement) {
-        if (statement instanceof Return r) {
-            List<Instruction> instructions = new ArrayList<>();
-            instructions.addAll(codeGenExpr(r.expr()));
+        if (statement instanceof Return(Expr expr)) {
+            List<Instruction> instructions = new ArrayList<>(codeGenExpr(expr));
             instructions.add(new ReturnAsm());
             return instructions;
         } else throw new IllegalArgumentException("not done: Expr");
@@ -30,9 +29,9 @@ public class Codegen {
     }
 
     private static List<Instruction> codeGenExpr(Expr expr) {
-        if (expr instanceof Int i) {
+        if (expr instanceof Int(int i)) {
             List<Instruction> instructions = new ArrayList<>();
-            instructions.add(new Mov(i.i()));
+            instructions.add(new Mov(i));
             return instructions;
         } else throw new IllegalArgumentException("not done: Expr");
 
