@@ -20,7 +20,7 @@ public class Codegen {
         return new FunctionAsm(function.name(), codeGenInstructions(function.statement()));
     }
 
-    private static List<Instruction> codeGenInstructions(Node statement) {
+    private static List<Instruction> codeGenInstructions(Statement statement) {
         if (statement instanceof Return(Exp exp)) {
             List<Instruction> instructions = new ArrayList<>(codeGenExpr(exp));
             instructions.add(new ReturnAsm());

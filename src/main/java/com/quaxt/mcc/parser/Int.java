@@ -1,4 +1,4 @@
 package com.quaxt.mcc.parser;
 
-public record Int(int i) implements Exp {
+public record Int(int i) implements Constant {
 }

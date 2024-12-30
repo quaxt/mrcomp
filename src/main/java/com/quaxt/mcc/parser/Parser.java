@@ -14,7 +14,7 @@ public class Parser {
         }
     }
 
-    static Node parseStatement(List<Token> tokens) {
+    static Statement parseStatement(List<Token> tokens) {
         expect(Token.RETURN, tokens);
         Exp exp = parseExpr(tokens);
         expect(Token.SEMICOLON, tokens);
@@ -48,7 +48,7 @@ public class Parser {
         expect(Token.VOID, tokens);
         expect(Token.CLOSE_PAREN, tokens);
         expect(Token.OPEN_BRACE, tokens);
-        Node statement = parseStatement(tokens);
+        Statement statement = parseStatement(tokens);
         expect(Token.CLOSE_BRACE, tokens);
 
         return new Function(name, returnType, statement);
