@@ -1,7 +1,7 @@
-package com.quaxt.asm;
+package com.quaxt.mcc.asm;
 
-import com.quaxt.*;
-import com.quaxt.parser.*;
+import com.quaxt.mcc.Lexer;
+import com.quaxt.mcc.parser.*;
 
 import java.io.IOException;
 import java.nio.file.Files;

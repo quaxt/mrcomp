@@ -1,4 +1,4 @@
-package com.quaxt.parser;
+package com.quaxt.mcc.parser;
 
 public record Return (Exp exp) implements Node {
 

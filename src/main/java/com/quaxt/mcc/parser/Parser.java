@@ -1,8 +1,8 @@
-package com.quaxt.parser;
+package com.quaxt.mcc.parser;
 
 
-import com.quaxt.Token;
-import com.quaxt.TokenType;
+import com.quaxt.mcc.Token;
+import com.quaxt.mcc.TokenType;
 import java.util.List;
 
 public class Parser {

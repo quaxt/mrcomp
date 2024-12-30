@@ -1,6 +1,6 @@
-package com.quaxt.parser;
+package com.quaxt.mcc.parser;
 
-import com.quaxt.Token;
+import com.quaxt.mcc.Token;
 
 public record Function(String name, Token returnType, Node statement) {
 }

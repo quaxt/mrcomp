@@ -1,9 +1,9 @@
-package com.quaxt;
+package com.quaxt.mcc;
 
-import com.quaxt.asm.Codegen;
-import com.quaxt.asm.ProgramAsm;
-import com.quaxt.parser.Parser;
-import com.quaxt.parser.Program;
+import com.quaxt.mcc.asm.Codegen;
+import com.quaxt.mcc.asm.ProgramAsm;
+import com.quaxt.mcc.parser.Parser;
+import com.quaxt.mcc.parser.Program;
 
 import java.io.*;
 import java.nio.file.Files;

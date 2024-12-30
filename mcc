@@ -1,2 +1,8 @@
 #!/bin/bash
-java -cp /home/mreilly/wa/mrcomp/target/mrcompiler-1.0-SNAPSHOT.jar com.quaxt.Mcc "$@"
+if [[ $BASH_SOURCE = */* ]]; then
+    mccdir=${BASH_SOURCE%/*}/
+else
+    mccdir=./
+fi
+
+java -cp "${mccdir}target/mcc-1.0-SNAPSHOT.jar" com.quaxt.mcc.Mcc "$@"

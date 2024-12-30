@@ -1,4 +1,4 @@
-package com.quaxt;
+package com.quaxt.mcc;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.quaxt.asm;
+package com.quaxt.mcc.asm;
 
 public sealed interface AsmNode permits FunctionAsm {
 }

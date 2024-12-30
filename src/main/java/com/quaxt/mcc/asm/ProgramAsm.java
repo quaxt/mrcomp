@@ -1,6 +1,5 @@
-package com.quaxt.asm;
+package com.quaxt.mcc.asm;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.List;
 

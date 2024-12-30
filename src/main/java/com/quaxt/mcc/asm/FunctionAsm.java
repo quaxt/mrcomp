@@ -1,4 +1,4 @@
-package com.quaxt.asm;
+package com.quaxt.mcc.asm;
 
 import java.util.List;
 
