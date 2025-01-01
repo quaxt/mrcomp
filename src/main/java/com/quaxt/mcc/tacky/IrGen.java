@@ -1,5 +1,7 @@
 package com.quaxt.mcc.tacky;
 
+import com.quaxt.mcc.BinaryOperator;
+import com.quaxt.mcc.UnaryOperator;
 import com.quaxt.mcc.parser.*;
 
 import java.util.ArrayList;
@@ -31,22 +33,24 @@ public class IrGen {
         }
     }
 
-    private static ValIr emitInstructions(Exp exp, List<InstructionIr> instructions) {
-        switch (exp) {
-            case Constant c: {
-                return switch (c) {
-                    case Int(int i)  -> new IntIr(i);
-                };
-            }
-            case UnaryOp unaryOp: {
-                ValIr src = emitInstructions(unaryOp.exp(), instructions);
-                VarIr dst = makeTemporary();
-                instructions.add(new UnaryIr(unaryOp.op(), src, dst));
-                return dst;
+    private static ValIr emitInstructions(Exp expr, List<InstructionIr> instructions) {
+        switch (expr) {
+            case Int(int i): {
+                    return new IntIr(i);
 
             }
-            default:
-                throw new IllegalStateException("Unexpected value: " + exp);
+            case UnaryOp(UnaryOperator op, Exp exp): {
+                ValIr src = emitInstructions(exp, instructions);
+                VarIr dst = makeTemporary();
+                instructions.add(new UnaryIr(op, src, dst));
+                return dst;
+            }
+            case BinaryOp(BinaryOperator op, Exp left, Exp right):
+                ValIr v1 = emitInstructions(left, instructions);
+                ValIr v2 = emitInstructions(left, instructions);
+                VarIr dstName = makeTemporary();
+                instructions.add(new BinaryIr(op, v1, v2, dstName));
+                return dstName;
         }
     }
 

@@ -1,10 +1,7 @@
 package com.quaxt.mcc.parser;
 
 
-import com.quaxt.mcc.Lexer;
-import com.quaxt.mcc.UnaryOperator;
-import com.quaxt.mcc.Token;
-import com.quaxt.mcc.TokenType;
+import com.quaxt.mcc.*;
 
 import java.util.List;
 

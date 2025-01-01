@@ -66,6 +66,7 @@ public class Codegen {
                     instructionAsms.add(new Mov(toOperand(src), dst));
                     instructionAsms.add(new Unary(op, dst));
                 }
+                default -> throw new IllegalStateException("Unexpected value: " + inst);
             }
         }
         return instructionAsms;
