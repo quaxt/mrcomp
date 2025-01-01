@@ -75,8 +75,7 @@ public class Mcc {
         if (mode == Mode.TACKY) {
             return;
         }
-        ProgramAsm programAsm = Codegen.convertToAsm(programIr);
-        Codegen.replacePseudoRegisters(programAsm);
+        ProgramAsm programAsm = Codegen.generateAssembly(programIr);
         if (mode == Mode.CODEGEN) {
             return;
         }
@@ -95,6 +94,7 @@ public class Mcc {
         }
         System.exit(exitCode);
     }
+
 
     private static String removeEnding(String fileName) {
         String ending = ".c";
