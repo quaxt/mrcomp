@@ -75,7 +75,8 @@ public class Mcc {
         if (mode == Mode.TACKY) {
             return;
         }
-        ProgramAsm programAsm = Codegen.codeGenProgram(programIr);
+        ProgramAsm programAsm = Codegen.convertToAsm(programIr);
+        Codegen.replacePseudoRegisters(programAsm);
         if (mode == Mode.CODEGEN) {
             return;
         }
@@ -89,7 +90,9 @@ public class Mcc {
             return;
         }
         int exitCode = assemble(asmFile, intermediateFile.resolveSibling(bareFileName));
-        Files.delete(asmFile);
+        if (exitCode == 0) {
+            Files.delete(asmFile);
+        }
         System.exit(exitCode);
     }
 

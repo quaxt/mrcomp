@@ -1,4 +1,4 @@
 package com.quaxt.mcc.asm;
 
-public sealed interface Operand permits Imm, Pseudo, Reg {
+public sealed interface Operand permits Imm, Pseudo, Reg, Stack {
 }

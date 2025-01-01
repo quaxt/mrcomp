@@ -8,7 +8,6 @@ public record Unary(Op op, Operand operand) implements Instruction {
 
     @Override
     public void emitAsm(PrintWriter out) {
-        throw new RuntimeException("Not Implemented");
-       // out.println("        movl	$" + i + ", %eax");
+        printIndent(out,op.toString().toLowerCase()+"l\t" + formatOperand(operand));
     }
 }
